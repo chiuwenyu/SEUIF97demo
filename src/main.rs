@@ -4,20 +4,20 @@ use use_seuif97::call_seuif;
 
 fn main() {
     // saturated steam test data
-    let p: f64 = 0.00; // 壓力, 單位 MPa
+    let p: f64 = 0.101325; // 壓力, 單位 MPa
     let t: f64 = 100.0; // 溫度, 單位攝氏度
-    let res = call_seuif(p, t, 10);
+    // let res = call_seuif(p, t, 10);  // call by temp (mode = 10)
+    let res = call_seuif(p, t, 20);  // call by pres (mode = 20)
 
-
-    // super heating steam test data
+    // steam test data
     // let p: f64 = 16.10; // 壓力, 單位 MPa
     // let t: f64 = 535.10; // 溫度, 單位攝氏度
-    // let res = call_seuif(p, t, 30);
+    // let res = call_seuif(p, t, 30);  // mode = 30
 
-    // water steam test data
+    // water test data
     // let p: f64 = 0.101325; // 壓力, 單位 MPa
     // let t: f64 = 90.0; // 溫度, 單位攝氏度
-    // let res = call_seuif(p, t, 40);
+    // let res = call_seuif(p, t, 40);      // mode = 40
 
     println!("在壓力 {:.4} MPa 和溫度 {:.4} °C 下:", p, t);
     println!("密度 d = {:.4} kg/m³", res.d);

@@ -1,5 +1,5 @@
 pub mod use_seuif97;
-use use_seuif97::SteamProps;
+// use use_seuif97::SteamProps;
 use use_seuif97::call_seuif;
 
 fn main() {

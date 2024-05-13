@@ -42,8 +42,10 @@ pub fn call_seuif(p: f64, t: f64, mode:u32) -> SteamProps {
     return match mode {
         10 => sat_steam_by_temp(t),
         20 => sat_steam_by_pres(p),
-        30 => steam(p, t),
-        40 => water(p,t),
+        30 => sat_water_by_temp(t),
+        40 => sat_water_by_pres(p),
+        50 => superheat_steam(p, t),
+        60 => subcool_water(p,t),
         _ => SteamProps::new(),
     };
 }
@@ -84,7 +86,41 @@ fn sat_steam_by_pres(p: f64) -> SteamProps {
     sp
 }
 
-fn steam(p: f64, t: f64) -> SteamProps {
+fn sat_water_by_temp(t: f64) -> SteamProps {
+    let mut sp= SteamProps:: new();
+
+    sp.d = tx(t, 0.0 , 2);  // 計算在給定溫度下的密度
+    sp.v = tx(t, 0.0, 3);   // 計算在給定溫度下的比容
+    sp.h = tx(t, 0.0, 4);   // 計算在給定溫度下的比焓
+    sp.s = tx(t, 0.0,5);    // 計算在給定溫度下的比熵
+    sp.u = tx(t, 0.0, 7);   // 計算在給定溫度下的北內能
+    sp.dv = tx(t, 0.0,24);  // 計算在給定溫度下的靜黏度
+    sp.kv = tx(t, 0.0,25);  // 計算在給定溫度下的動黏度
+    sp.k = tx(t, 0.0,26);   // 計算在給定溫度下的熱傳導係數
+    sp.td = tx(t, 0.0, 27); // 計算在給定溫度下的熱擴散係數
+    sp.st = tx(t, 0.0, 29);     // 計算在給定溫度下的表面張力
+
+    sp
+}
+
+fn sat_water_by_pres(p: f64) -> SteamProps {
+    let mut sp= SteamProps:: new();
+
+    sp.d = px(p, 0.0 , 2);  // 計算在給定壓力下的密度
+    sp.v = px(p, 0.0, 3);   // 計算在給定壓力下的比容
+    sp.h = px(p, 0.0, 4);   // 計算在給定壓力下的比焓
+    sp.s = px(p, 0.0,5);    // 計算在給定壓力下的比熵
+    sp.u = px(p, 0.0, 7);   // 計算在給定壓力下的北內能
+    sp.dv = px(p, 0.0,24);  // 計算在給定壓力下的靜黏度
+    sp.kv = px(p, 0.0,25);  // 計算在給定壓力下的動黏度
+    sp.k = px(p, 0.0,26);   // 計算在給定壓力下的熱傳導係數
+    sp.td = px(p, 0.0, 27); // 計算在給定壓力下的熱擴散係數
+    sp.st = px(p, 0.0, 29);     // 計算在給定壓力下的表面張力
+
+    sp
+}
+
+fn superheat_steam(p: f64, t: f64) -> SteamProps {
     let mut sp= SteamProps:: new();
 
     sp.d = pt(p, t, 2); // 計算在給定壓力和溫度下的密度
@@ -100,7 +136,7 @@ fn steam(p: f64, t: f64) -> SteamProps {
     sp
 }
 
-fn water(p: f64, t: f64) -> SteamProps {
+fn subcool_water(p: f64, t: f64) -> SteamProps {
     let mut sp= SteamProps:: new();
 
     sp.d = pt(p, t, 2); // 計算在給定壓力和溫度下的密度

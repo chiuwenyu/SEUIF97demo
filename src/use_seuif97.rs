@@ -8,6 +8,7 @@ pub struct SteamProps {
     pub h: f64,     // 4. Specific enthalpy, kJ/kg
     pub s: f64,     // 5. Specific entropy, kJ/(kg·K)
     pub u: f64,     // 7. Specific internal energy, kJ/kg
+    pub x: f64,     // 15. steam quality, 0 <= x <= 1
     pub dv: f64,    // 24. Dynamic viscosity, Pa·s
     pub kv: f64,    // 25. Kinematic viscosity, m2/s
     pub k : f64,    // 26. Thermal conductivity, W/(m·K)
@@ -24,6 +25,7 @@ impl SteamProps {
             h: -999.0,
             s: -999.0,
             u: -999.0,
+            x: -999.0,
             dv: -999.0,
             kv: -999.0,
             k: -999.0,
@@ -57,7 +59,8 @@ fn sat_steam_by_temp(t: f64) -> SteamProps {
     sp.v = tx(t, 1.0, 3);   // 計算在給定溫度下的比容
     sp.h = tx(t, 1.0, 4);   // 計算在給定溫度下的比焓
     sp.s = tx(t, 1.0,5);    // 計算在給定溫度下的比熵
-    sp.u = tx(t, 1.0, 7);   // 計算在給定溫度下的北內能
+    sp.u = tx(t, 1.0, 7);   // 計算在給定溫度下的比內能
+    sp.x = tx(t, 1.0, 15);  // 計算在給定溫度下的蒸氣比率
     sp.dv = tx(t, 1.0,24);  // 計算在給定溫度下的靜黏度
     sp.kv = tx(t, 1.0,25);  // 計算在給定溫度下的動黏度
     sp.k = tx(t, 1.0,26);   // 計算在給定溫度下的熱傳導係數
@@ -75,7 +78,8 @@ fn sat_steam_by_pres(p: f64) -> SteamProps {
     sp.v = px(p, 1.0, 3);   // 計算在給定壓力下的比容
     sp.h = px(p, 1.0, 4);   // 計算在給定壓力下的比焓
     sp.s = px(p, 1.0,5);    // 計算在給定壓力下的比熵
-    sp.u = px(p, 1.0, 7);   // 計算在給定壓力下的北內能
+    sp.u = px(p, 1.0, 7);   // 計算在給定壓力下的比內能
+    sp.x = px(p, 1.0, 15);  // 計算在給定壓力下的蒸氣比率
     sp.dv = px(p, 1.0,24);  // 計算在給定壓力下的靜黏度
     sp.kv = px(p, 1.0,25);  // 計算在給定壓力下的動黏度
     sp.k = px(p, 1.0,26);   // 計算在給定壓力下的熱傳導係數
@@ -93,7 +97,8 @@ fn sat_water_by_temp(t: f64) -> SteamProps {
     sp.v = tx(t, 0.0, 3);   // 計算在給定溫度下的比容
     sp.h = tx(t, 0.0, 4);   // 計算在給定溫度下的比焓
     sp.s = tx(t, 0.0,5);    // 計算在給定溫度下的比熵
-    sp.u = tx(t, 0.0, 7);   // 計算在給定溫度下的北內能
+    sp.u = tx(t, 0.0, 7);   // 計算在給定溫度下的比內能
+    sp.x = tx(t, 0.0, 15);  // 計算在給定溫度下的蒸氣比率
     sp.dv = tx(t, 0.0,24);  // 計算在給定溫度下的靜黏度
     sp.kv = tx(t, 0.0,25);  // 計算在給定溫度下的動黏度
     sp.k = tx(t, 0.0,26);   // 計算在給定溫度下的熱傳導係數
@@ -110,7 +115,8 @@ fn sat_water_by_pres(p: f64) -> SteamProps {
     sp.v = px(p, 0.0, 3);   // 計算在給定壓力下的比容
     sp.h = px(p, 0.0, 4);   // 計算在給定壓力下的比焓
     sp.s = px(p, 0.0,5);    // 計算在給定壓力下的比熵
-    sp.u = px(p, 0.0, 7);   // 計算在給定壓力下的北內能
+    sp.u = px(p, 0.0, 7);   // 計算在給定壓力下的比內能
+    sp.x = px(p, 0.0, 15);  // 計算在給定壓力下的蒸氣比率
     sp.dv = px(p, 0.0,24);  // 計算在給定壓力下的靜黏度
     sp.kv = px(p, 0.0,25);  // 計算在給定壓力下的動黏度
     sp.k = px(p, 0.0,26);   // 計算在給定壓力下的熱傳導係數
@@ -127,6 +133,8 @@ fn superheat_steam(p: f64, t: f64) -> SteamProps {
     sp.v = pt(p, t, 3); // 計算在給定壓力和溫度下的比容
     sp.h = pt(p, t, 4); // 計算在給定壓力和溫度下的比焓
     sp.s = pt(p, t, 5); // 計算在給定壓力和溫度下的比熵
+    sp.u = pt(p, t, 7);   // 計算在給定壓力和溫度下的比內能
+    sp.x = pt(p, t, 15);   // 計算在給定壓力和溫度下的蒸氣比率
     sp.dv = pt(p, t, 24);  // 計算在給定壓力和溫度下的靜黏度
     sp.kv = pt(p, t, 25);  // 計算在給定壓力和溫度下的動黏度
     sp.k = pt(p, t, 26);   // 計算在給定壓力和溫度下的熱傳導係數
@@ -143,6 +151,7 @@ fn subcool_water(p: f64, t: f64) -> SteamProps {
     sp.v = pt(p, t, 3); // 計算在給定壓力和溫度下的比容
     sp.h = pt(p, t, 4); // 計算在給定壓力和溫度下的比焓
     sp.s = pt(p, t, 5); // 計算在給定壓力和溫度下的比熵
+    sp.x = pt(p, t, 15);   // 計算在給定壓力和溫度下的蒸氣比率
     sp.dv = pt(p, t, 24);  // 計算在給定壓力和溫度下的靜黏度
     sp.kv = pt(p, t, 25);  // 計算在給定壓力和溫度下的動黏度
     sp.k = pt(p, t, 26);   // 計算在給定壓力和溫度下的熱傳導係數

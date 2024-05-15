@@ -1,6 +1,6 @@
 pub mod use_seuif97;
 // use use_seuif97::SteamProps;
-use use_seuif97::call_seuif;
+use crate::use_seuif97::steam_props_cal::*;
 
 fn main() {
     // saturated steam test data

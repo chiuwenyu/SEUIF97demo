@@ -39,7 +39,7 @@ impl SteamProps {
 pub fn call_seuif(p: f64, t: f64, mode:u32) -> SteamProps {
     // p: f64  // 壓力, 單位 MPa
     // t: f64  // 溫度, 單位攝氏度
-    // mode: u32  // (10, 20, 30, 40)
+    // mode: u32  // (10, 20, 30, 40, 50, 60)
 
     return match mode {
         10 => sat_steam_by_temp(t),

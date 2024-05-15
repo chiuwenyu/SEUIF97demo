@@ -4,9 +4,9 @@ use crate::use_seuif97::steam_props_cal::*;
 
 fn main() {
     // saturated steam test data
-    // let p: f64 = 0.101325; // 壓力, 單位 MPa
-    // let t: f64 = 100.0; // 溫度, 單位攝氏度
-    // let res = call_seuif(p, t, 10);  // saturated steam by temperature (mode = 10)
+    let p: f64 = 0.101325; // 壓力, 單位 MPa
+    let t: f64 = 100.0; // 溫度, 單位攝氏度
+    let res = call_seuif(p, t, 10);  // saturated steam by temperature (mode = 10)
     // let res = call_seuif(p, t, 20);  // saturated stem by pressure (mode = 20)
 
     // saturated water test data
@@ -21,9 +21,9 @@ fn main() {
     // let res = call_seuif(p, t, 50);  // mode = 50
 
     // sub-cool water test data
-    let p: f64 = 0.101325; // 壓力, 單位 MPa
-    let t: f64 = 90.0; // 溫度, 單位攝氏度
-    let res = call_seuif(p, t, 60);      // mode = 60
+    // let p: f64 = 0.101325; // 壓力, 單位 MPa
+    // let t: f64 = 90.0; // 溫度, 單位攝氏度
+    // let res = call_seuif(p, t, 60);      // mode = 60
 
     println!("在壓力 {:.4} MPa 和溫度 {:.4} °C 下:", p, t);
     println!("密度 d = {:.4} kg/m³", res.d);

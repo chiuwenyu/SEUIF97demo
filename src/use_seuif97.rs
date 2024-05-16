@@ -3,6 +3,7 @@ extern crate seuif97;
 pub mod steam_props_cal {
     use seuif97::*;
     pub struct SteamProps {
+        pub p: f64,     // 0: Pressure , MPa
         pub d: f64,     // 2. Density, kg/m³
         pub v: f64,     // 3. Specific Volume, m³/kg
         pub h: f64,     // 4. Specific enthalpy, kJ/kg
@@ -20,6 +21,7 @@ pub mod steam_props_cal {
     impl SteamProps {
         pub fn new() -> SteamProps {
             SteamProps {
+                p: -999.0,
                 d: -999.0,
                 v: -999.0,
                 h: -999.0,
@@ -54,7 +56,7 @@ pub mod steam_props_cal {
 
     fn sat_steam_by_temp(t: f64) -> SteamProps {
         let mut sp = SteamProps::new();
-
+        sp.p = tx(t, 1.0, 0);   // 計算給定溫度下的飽和蒸氣壓
         sp.d = tx(t, 1.0, 2);  // 計算在給定溫度下的密度
         sp.v = tx(t, 1.0, 3);   // 計算在給定溫度下的比容
         sp.h = tx(t, 1.0, 4);   // 計算在給定溫度下的比焓

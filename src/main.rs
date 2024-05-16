@@ -26,6 +26,7 @@ fn main() {
     // let res = call_seuif(p, t, 60);      // mode = 60
 
     println!("在壓力 {:.4} MPa 和溫度 {:.4} °C 下:", p, t);
+    println!("壓力 {:.4} Mpa", res.p);
     println!("密度 d = {:.4} kg/m³", res.d);
     println!("比容 v = {:.6} m³/kg", res.v);
     println!("比焓 h = {:.4} kJ/kg", res.h);
